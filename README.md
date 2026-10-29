@@ -1,89 +1,175 @@
 # Customer Segmentation Using Clustering
 
-A B.Sc. Computer Science Data Mining mini-project that explores customer groups using **K-Means**, **Agglomerative Hierarchical Clustering**, and **Principal Component Analysis (PCA)**.
+A Data Mining mini project that applies **K-Means clustering, Agglomerative Hierarchical Clustering, and Principal Component Analysis (PCA)** to identify customer groups based on demographic and spending characteristics.
 
-## Project objective
+## Project Overview
 
-Use customer age, annual income, and spending score to discover groups with similar profiles. This is an **unsupervised learning** task: there is no predefined target label.
+Customer segmentation helps businesses understand different customer groups and develop more targeted marketing strategies. This project applies unsupervised machine learning to group mall customers using their age, annual income, and spending score.
+
+Two clustering algorithms are implemented and evaluated using internal clustering metrics. PCA is used to visualise the resulting clusters in two dimensions.
+
+## Objectives
+
+- Explore and preprocess customer data.
+- Apply K-Means clustering.
+- Apply Agglomerative Hierarchical Clustering.
+- Compare clustering performance using evaluation metrics.
+- Visualise clusters using PCA.
+- Interpret customer groups using their average characteristics.
+
+## Technologies Used
+
+- Python
+- Pandas and NumPy
+- Scikit-learn
+- Matplotlib and Seaborn
+- SciPy
+- PCA and StandardScaler
 
 ## Dataset
 
-This project uses the public **Mall Customers** dataset (about 200 customer records). It commonly contains `CustomerID`, `Gender` (some copies use `Genre`), `Age`, `Annual Income (k$)`, and `Spending Score (1-100)`.
+The project uses the Mall Customers dataset, containing customer demographic and spending information.
 
-- Dataset page: https://github.com/hannazan/mall-customer-segmentation/blob/main/data/Mall_Customers.csv
-- Direct CSV source used by the script: https://raw.githubusercontent.com/hannazan/mall-customer-segmentation/main/data/Mall_Customers.csv
+**Features used for clustering:**
 
-The script downloads the CSV to `data/Mall_Customers.csv` on its first run if it is not present. An internet connection is required for that first download. You can also download the CSV manually from the source page and save it at that path.
+| Feature | Description |
+|---|---|
+| Age | Customer age |
+| Annual Income (k$) | Annual income in thousands of dollars |
+| Spending Score (1–100) | Customer spending score |
 
-`CustomerID` is not used as a model feature because it is an identifier. The primary clustering features are age, annual income, and spending score. These numeric features are standardized before distance-based clustering. Gender is retained in the original data but is not included in the primary model.
+The features are standardised before clustering. PCA is used for visualisation rather than as the input to the clustering algorithms.
 
-## Algorithms and analysis
+The dataset is downloaded automatically when the program runs, provided an internet connection is available.
 
-1. **Data inspection and preparation** — inspect rows, columns, missing values, remove duplicate records, coerce selected feature columns to numeric, and remove records missing required feature values.
-2. **K-Means** — fit models across a range of `k` values, plot inertia using the Elbow Method, and plot silhouette scores. For the algorithm comparison, the script chooses the tested `k` with the highest silhouette score.
-3. **Agglomerative Hierarchical Clustering** — use Ward linkage with the same selected cluster count and create a dendrogram for a sample of records.
-4. **PCA** — project standardized three-feature data to two components for visualisation. PCA is not used to fit the primary clustering models.
-5. **Evaluation** — compare Silhouette Score (higher is generally better), Davies–Bouldin Index (lower is generally better), and Calinski–Harabasz Score (higher is generally better). These are internal metrics, not proof that segments are objectively correct.
-6. **Cluster profiling** — calculate each cluster's customer count and mean age, income, and spending score.
+## Methodology
 
-## Folder structure
+1. **Data loading:** Load the customer dataset.
+2. **Data preprocessing:** Select the clustering features and standardise their values.
+3. **Cluster selection:** Evaluate candidate cluster counts using silhouette scores and the elbow method.
+4. **K-Means clustering:** Group customers based on feature similarity.
+5. **Hierarchical clustering:** Apply Agglomerative Clustering to identify customer groups.
+6. **Model evaluation:** Compare the algorithms using three internal evaluation metrics.
+7. **PCA visualisation:** Project the data onto two principal components for visual inspection.
+8. **Cluster profiling:** Calculate average customer characteristics for each cluster.
 
-```text
-Customer_Segmentation_Clustering_Project/
-├── data/
-│   └── .gitkeep
-├── outputs/                 # created when the program runs; ignored by Git
-├── docs/
-│   ├── PROJECT_REPORT.md
-│   └── VIVA_QUESTIONS.md
-├── main.py
-├── requirements.txt
-├── .gitignore
-└── README.md
+## Results
+
+Both algorithms identified six clusters in this run.
+
+| Evaluation Metric | K-Means | Hierarchical |
+|---|---:|---:|
+| Number of clusters | 6 | 6 |
+| Silhouette Score (higher is better) | 0.4284 | 0.4201 |
+| Davies–Bouldin Index (lower is better) | 0.8254 | 0.8521 |
+| Calinski–Harabasz Score (higher is better) | 135.1021 | 127.9865 |
+
+**Interpretation:** K-Means performed slightly better across all three internal evaluation metrics for this dataset and configuration. This does not establish that it is always superior to hierarchical clustering.
+
+The first two principal components explain **77.57% of the total variance**, allowing the clusters to be visualised in two dimensions while retaining most of the variation in the standardised features.
+
+## Visualisations
+
+### 1. Feature Distributions
+
+![Feature Distributions](outputs/feature_distributions.png)
+
+### 2. Elbow Method
+
+![Elbow Method](outputs/elbow_method.png)
+
+### 3. Silhouette Scores by Cluster Count
+
+![Silhouette Scores](outputs/silhouette_by_k.png)
+
+### 4. K-Means Clusters Using PCA
+
+![K-Means PCA Clusters](outputs/kmeans_pca_clusters.png)
+
+### 5. Hierarchical Clusters Using PCA
+
+![Hierarchical PCA Clusters](outputs/hierarchical_pca_clusters.png)
+
+### 6. Hierarchical Clustering Dendrogram
+
+![Hierarchical Dendrogram](outputs/hierarchical_dendrogram.png)
+
+## Generated Outputs
+
+The `outputs/` directory contains:
+
+- `clustering_metrics.csv` — evaluation metrics for both algorithms.
+- `cluster_profiles.csv` — average characteristics and sizes of the clusters.
+- `customer_cluster_assignments.csv` — cluster labels assigned to individual customers.
+- PNG files — generated charts and visualisations.
+
+## How to Run the Project
+
+### Prerequisites
+
+- Python 3.10 or a compatible Python version supported by the dependencies.
+- Git (optional, for cloning the repository).
+- An internet connection for the initial dataset download.
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Moussa986/Customer-Segmentation-Clustering.git
+cd Customer-Segmentation-Clustering
 ```
 
-## Run on Windows (VS Code / PowerShell)
+### 2. Create a virtual environment
 
-Open this folder in VS Code. In the terminal, run:
+On Windows:
 
 ```powershell
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install --upgrade pip
-pip install -r requirements.txt
+.venv\Scripts\Activate.ps1
+```
+
+If PowerShell blocks activation, you can use Command Prompt or run the Python executable directly from `.venv`.
+
+### 3. Install dependencies
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+### 4. Run the project
+
+```bash
 python main.py
 ```
 
-If PowerShell blocks environment activation, run this in the same terminal session, then activate again:
-
-```powershell
-Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned
-.\.venv\Scripts\Activate.ps1
-```
-
-## Output files
-
-After a successful run, the `outputs/` folder contains:
-
-- `feature_distributions.png`
-- `elbow_method.png`
-- `silhouette_by_k.png`
-- `kmeans_pca_clusters.png`
-- `hierarchical_pca_clusters.png`
-- `hierarchical_dendrogram.png`
-- `clustering_metrics.csv`
-- `customer_cluster_assignments.csv`
-- `cluster_profiles.csv`
-
-The console prints the dataset overview, selected `k`, internal evaluation metrics, and PCA variance explained. **Do not report numerical findings until you have run the project and checked the generated output files.** Cluster IDs are arbitrary labels, not rankings.
+After execution, check the `outputs/` directory for evaluation results, cluster profiles, customer assignments, and visualisations.
 
 ## Limitations
 
-- The dataset is small and commonly used for teaching; it may not represent all mall customers.
-- Spending score is provided by the dataset and its real-world calculation is not documented here.
-- Internal metrics compare cluster structure but do not establish business value or causal effects.
-- PCA plots compress three features into two dimensions, so some information is lost.
+- The analysis uses a relatively small educational dataset and may not generalise to other customer populations.
+- The dataset's spending score is provided; its original calculation is not established by this analysis.
+- Clustering results depend on feature selection, scaling, algorithm settings, and the selected number of clusters.
+- Internal evaluation metrics measure aspects of cluster structure, not actual business impact.
+- The customer groups are descriptive patterns, not verified customer types or predictions of future behaviour.
 
-## Academic integrity
+## Conclusion
 
-Run the code yourself, review the actual generated metrics and plots, and write your final interpretation from those outputs. The report in `docs/PROJECT_REPORT.md` is a structured starting point and deliberately does not invent measured results.
+This project demonstrates an end-to-end unsupervised learning workflow for customer segmentation. K-Means and Agglomerative Hierarchical Clustering were implemented and compared, while PCA and cluster profiling helped interpret the resulting groups.
+
+In this experiment, K-Means achieved slightly stronger internal evaluation scores. Further analysis on larger datasets and validation against business outcomes would be needed before using the segments for real-world marketing decisions.
+
+## Project Documentation
+
+- [Project Report](docs/PROJECT_REPORT.md)
+- [Viva Questions and Answers](docs/VIVA_QUESTIONS.md)
+
+## Author
+
+**Moussa Issa**
+
+B.Sc. Computer Science Student
+
+Chandigarh University
+
+---
+
+*Academic mini project developed for the Data Mining subject.*
