@@ -157,10 +157,7 @@ This project demonstrates an end-to-end unsupervised learning workflow for custo
 
 In this experiment, K-Means achieved slightly stronger internal evaluation scores. Further analysis on larger datasets and validation against business outcomes would be needed before using the segments for real-world marketing decisions.
 
-## Project Documentation
 
-- [Project Report](docs/PROJECT_REPORT.md)
-- [Viva Questions and Answers](docs/VIVA_QUESTIONS.md)
 
 ## Author
 
