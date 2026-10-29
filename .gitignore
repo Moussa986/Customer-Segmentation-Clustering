@@ -1,0 +1,16 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Generated analysis output (regenerate by running main.py)
+
+# Local environment / secrets
+.env
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+.vscode/
